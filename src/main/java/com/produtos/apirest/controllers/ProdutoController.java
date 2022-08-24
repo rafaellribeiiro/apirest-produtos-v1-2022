@@ -3,10 +3,12 @@ package com.produtos.apirest.controllers;
 import com.produtos.apirest.models.Produto;
 import com.produtos.apirest.services.ProdutoService;
 import io.swagger.v3.oas.annotations.Operation;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -24,7 +26,7 @@ public class ProdutoController {
 
 	@Operation(summary = "listar produto por id")
 	@GetMapping("/produtos/{id}")
-	public Produto listarProdutoUnico(@PathVariable(value = "id") long id) {
+	public Optional<Produto> listarProdutoUnico(@PathVariable(value = "id") Integer id) throws NotFoundException {
 		return produtoService.listarProdutoUnico(id);
 	}
 

@@ -1,12 +1,15 @@
 package com.produtos.apirest.services;
 
+import com.produtos.apirest.exceptions.ObjectNotFoundException;
 import com.produtos.apirest.models.Produto;
 import com.produtos.apirest.repository.ProdutoRepository;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProdutoServiceImpl implements ProdutoService{
@@ -20,8 +23,12 @@ public class ProdutoServiceImpl implements ProdutoService{
 	}
 
 	@Override
-	public Produto listarProdutoUnico(@PathVariable(value = "id") long id) {
-		return produtoRepository.findById(id);
+	public Optional<Produto> listarProdutoUnico(@PathVariable(value = "id") Integer id) throws NotFoundException {
+		Optional<Produto>  prod = produtoRepository.findById(id);
+		if(!prod.isPresent()){
+			throw new ObjectNotFoundException("Produto não encontrado");
+		}
+		return prod;
 	}
 
 	@Override
